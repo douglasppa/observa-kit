@@ -1,0 +1,11 @@
+route:
+  receiver: local-webhook
+  group_wait: 30s
+  group_interval: 2m
+  repeat_interval: 2h
+
+receivers:
+  - name: local-webhook
+    webhook_configs:
+      - url: http://app:8000/alerts
+        send_resolved: true

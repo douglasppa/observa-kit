@@ -1,0 +1,52 @@
+# Ignore git stuff
+.git
+.gitignore
+.gitattributes
+
+# Ignore local envs
+.venv
+venv
+ENV
+env
+.conda
+
+# Ignore editor/IDE configs
+.vscode
+.idea
+*.swp
+*.swo
+
+# Ignore OS-specific
+.DS_Store
+Thumbs.db
+
+# Ignore Python caches & tests
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+*.egg-info
+*.egg
+.pytest_cache
+.coverage
+htmlcov
+
+# Ignore local configs & secrets
+.env
+.env.*
+
+# Ignore build artifacts
+*.log
+*.bak
+*.tmp
+*.seed
+*.pid
+dist/
+build/
+node_modules/
+
+# Ignore runtime data from services
+grafana/data
+prometheus/data
+alertmanager/data

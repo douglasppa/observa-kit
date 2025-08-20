@@ -1,0 +1,42 @@
+# Prometheus alert rules — DEMO preset
+# Objetivo: respostas rápidas em laboratório/demonstração
+# Dicas:
+# - Janela mais curta (30s/1m) + for curto (1m)
+# - Thresholds pensados para gatilhar fácil com os endpoints /simulate/*
+
+groups:
+  - name: observa-rules-demo
+    interval: 15s
+    rules:
+      - alert: HighErrorRate
+        # % de 5xx na média dos últimos 30s
+        expr: (sum(rate(http_requests_total{status=~"5.."}[30s])) / sum(rate(http_requests_total[30s]))) * 100 > 2
+        for: 1m
+        labels:
+          severity: warning
+          preset: demo
+        annotations:
+          summary: "Error rate > 2% (janela 30s) por 1m"
+          description: "Erro sustentado em curto período (modo demo)."
+
+      - alert: HighLatencyP95
+        # p95 da janela de 1m
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[1m])) by (le)) > 0.8
+        for: 1m
+        labels:
+          severity: warning
+          preset: demo
+        annotations:
+          summary: "p95 > 0.8s (janela 1m) por 1m"
+          description: "Latência sustentada acima do alvo (modo demo)."
+
+      - alert: LowThroughput
+        # requests por segundo na média dos últimos 30s
+        expr: sum(rate(http_requests_total[30s])) < 1
+        for: 1m
+        labels:
+          severity: info
+          preset: demo
+        annotations:
+          summary: "Throughput < 1 rps (janela 30s) por 1m"
+          description: "Queda de tráfego sustentada (modo demo)."

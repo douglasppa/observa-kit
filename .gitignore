@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pkl
+*.egg-info/
+*.egg
+*.log
+
+# Virtual envs
+.venv/
+venv/
+ENV/
+env/
+.conda/
+
+# IDEs / editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Docker
+*.pid
+*.seed
+*.bak
+*.tmp
+
+# Node / front (if added later)
+node_modules/
+dist/
+build/
+
+# Coverage / testing
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+
+# Misc
+.env
+.env.*
+*.sqlite3
+
+# Grafana / Prometheus data (runtime, not config)
+grafana/data/
+prometheus/data/
+alertmanager/data/

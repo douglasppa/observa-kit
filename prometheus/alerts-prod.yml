@@ -1,0 +1,42 @@
+# Prometheus alert rules — PROD preset
+# Objetivo: reduzir ruído em produção
+# Dicas:
+# - Janelas mais longas (5m) + for mais longo (5–10m)
+# - Ajuste thresholds ao seu SLO e volume de tráfego
+
+groups:
+  - name: observa-rules-prod
+    interval: 30s
+    rules:
+      - alert: HighErrorRate
+        # % de 5xx na média dos últimos 5m
+        expr: (sum(rate(http_requests_total{status=~"5.."}[5m])) / sum(rate(http_requests_total[5m]))) * 100 > 2
+        for: 5m
+        labels:
+          severity: warning
+          preset: prod
+        annotations:
+          summary: "Error rate > 2% (janela 5m) por 5m"
+          description: "Erro sustentado em janela e período mais longos."
+
+      - alert: HighLatencyP95
+        # p95 da janela de 5m
+        expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le)) > 0.8
+        for: 5m
+        labels:
+          severity: warning
+          preset: prod
+        annotations:
+          summary: "p95 > 0.8s (janela 5m) por 5m"
+          description: "Latência sustentada acima do alvo (produção)."
+
+      - alert: LowThroughput
+        # requests por segundo na média dos últimos 5m
+        expr: sum(rate(http_requests_total[5m])) < 1
+        for: 10m
+        labels:
+          severity: info
+          preset: prod
+        annotations:
+          summary: "Throughput < 1 rps (janela 5m) por 10m"
+          description: "Queda de tráfego sustentada (produção)."

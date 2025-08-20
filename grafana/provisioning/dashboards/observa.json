@@ -1,0 +1,77 @@
+{
+  "id": null,
+  "uid": "observa",
+  "title": "Observa - Saúde do Serviço",
+  "tags": ["observability", "demo"],
+  "timezone": "browser",
+  "schemaVersion": 38,
+  "version": 1,
+  "refresh": "10s",
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Erro (%) - 5m",
+      "id": 1,
+      "gridPos": {"h": 8, "w": 8, "x": 0, "y": 0},
+      "targets": [{
+        "expr": "100 * sum(rate(http_requests_total{status=~\"5..\"}[5m])) / sum(rate(http_requests_total[5m]))",
+        "legendFormat": "error%",
+        "refId": "A"
+      }]
+    },
+    {
+      "type": "stat",
+      "title": "Latência p95 (s) - 5m",
+      "id": 2,
+      "gridPos": {"h": 8, "w": 8, "x": 8, "y": 0},
+      "targets": [{
+        "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le))",
+        "legendFormat": "p95",
+        "refId": "A"
+      }]
+    },
+    {
+      "type": "stat",
+      "title": "Throughput (req/s) - 1m",
+      "id": 3,
+      "gridPos": {"h": 8, "w": 8, "x": 16, "y": 0},
+      "targets": [{
+        "expr": "sum(rate(http_requests_total[1m]))",
+        "legendFormat": "rps",
+        "refId": "A"
+      }]
+    },
+    {
+      "type": "graph",
+      "title": "Erro %",
+      "id": 4,
+      "gridPos": {"h": 9, "w": 12, "x": 0, "y": 8},
+      "targets": [{
+        "expr": "100 * sum(rate(http_requests_total{status=~\"5..\"}[5m])) / sum(rate(http_requests_total[5m]))",
+        "refId": "A"
+      }]
+    },
+    {
+      "type": "graph",
+      "title": "Latência p95 (s)",
+      "id": 5,
+      "gridPos": {"h": 9, "w": 12, "x": 12, "y": 8},
+      "targets": [{
+        "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le))",
+        "refId": "A"
+      }]
+    },
+    {
+      "type": "graph",
+      "title": "Requests por segundo",
+      "id": 6,
+      "gridPos": {"h": 9, "w": 24, "x": 0, "y": 17},
+      "targets": [{
+        "expr": "sum(rate(http_requests_total[1m]))",
+        "refId": "A"
+      }]
+    }
+  ],
+  "time": {"from": "now-15m", "to": "now"},
+  "templating": {"list": []}
+}
